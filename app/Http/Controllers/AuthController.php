@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -33,6 +34,7 @@ class AuthController extends Controller
     public function dashboard()
     {
         $data['users'] = User::all();
+        $data['roles'] = Role::all();
         return view('dashboard')->with($data);
     }
     public function logout()
