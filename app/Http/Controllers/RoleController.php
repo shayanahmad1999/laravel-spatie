@@ -28,10 +28,6 @@ class RoleController extends Controller
         $data['roles'] = Role::all();
         $data['edit'] = Role::find($role);
         $data['permissions'] = Permission::all();
-        // $roleId = intval($role);
-        // $data['rolePermissions'] = DB::table('role_has_permissions')
-        //     ->where('role_has_permissions.role_id',  $roleId)
-        //     ->pluck('role_has_permissions.permission_id');
         return view('role-permission.role.index')->with($data);
     }
 
