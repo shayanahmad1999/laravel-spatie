@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    //we define role here as well and in web as well and in blade as well define it where you want
+    public static function middleware(): array
+    {
+        return [
+            // new Middleware('role:Super Admin', only: ['index']),
+            // new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete role'), only:['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -15,6 +27,11 @@ class RoleController extends Controller
     {
         $data['roles'] = Role::all();
         $data['edit'] = Role::find($role);
+        $data['permissions'] = Permission::all();
+        // $roleId = intval($role);
+        // $data['rolePermissions'] = DB::table('role_has_permissions')
+        //     ->where('role_has_permissions.role_id',  $roleId)
+        //     ->pluck('role_has_permissions.permission_id');
         return view('role-permission.role.index')->with($data);
     }
 
@@ -77,5 +94,25 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->back()->with('success', 'Role deleted successfully');
+    }
+
+    public function assignPermissionToRole(Request $request, Role $role)
+    {
+        $request->validate([
+            'permissions' => 'required',
+        ]);
+
+        $role->syncPermissions($request->permissions);
+        return redirect()->route('role.index')->with('success', 'Assign Permission to ' . $role->name . ' successfully');
+    }
+
+    public function assignRoleToUser(Request $request, User $user)
+    {
+        $request->validate([
+            'roles' => 'required',
+        ]);
+
+        $user->syncRoles($request->roles);
+        return redirect()->route('dashboard')->with('success', 'Assign Role to ' . $user->name . ' successfully');
     }
 }
