@@ -35,8 +35,10 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="javascript:;" data-bs-toggle="modal"
-                                            data-bs-target="#assignRole{{ $user->id }}">Assign Role</a>
+                                        @hasrole('Super Admin')
+                                            <a href="javascript:;" data-bs-toggle="modal"
+                                                data-bs-target="#assignRole{{ $user->id }}">Assign Role</a>
+                                        @endhasrole
                                     </td>
                                 </tr>
                                 @php

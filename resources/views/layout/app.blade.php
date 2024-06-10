@@ -16,13 +16,15 @@
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <strong>Laravel Dashboard</strong>
             </a>
-            <a class="navbar nav-link" href="{{ route('permission.index') }}">
-                <strong>Permission</strong>
-            </a> 
-            &nbsp;|&nbsp;
-            <a class="navbar nav-link" href="{{ route('role.index') }}">
-                <strong>Role</strong>
-            </a>
+            @hasrole('Super Admin')
+                <a class="navbar nav-link" href="{{ route('permission.index') }}">
+                    <strong>Permission</strong>
+                </a>
+                &nbsp;|&nbsp;
+                <a class="navbar nav-link" href="{{ route('role.index') }}">
+                    <strong>Role</strong>
+                </a>
+            @endhasrole
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
