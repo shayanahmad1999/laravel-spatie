@@ -14,6 +14,10 @@ class AuthController extends Controller
     {
         return view('login');
     }
+    public function register(Request $request)
+    {
+        return view('register');
+    }
     public function authenticate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -30,6 +34,21 @@ class AuthController extends Controller
         } else {
             return redirect()->route('login')->withInput()->withErrors($validator);
         }
+    }
+    public function registerAuthenticate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        $user = User::create($validator->validate());
+
+        Auth::login($user);
+        
+        return redirect()->route('dashboard');
+           
     }
     public function dashboard()
     {
