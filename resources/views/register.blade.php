@@ -20,25 +20,44 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="#!">
+                                <form action="{{ route('register.authenticate') }}" method="post">
+                                    @csrf 
                                     <div class="row gy-3 overflow-hidden">
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" >
+                                                <label for="name" class="form-label">Name</label>
+                                            </div>
+                                            @error('name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
                                                 <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" >
                                                 <label for="email" class="form-label">Email</label>
                                             </div>
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
                                                 <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" >
                                                 <label for="password" class="form-label">Password</label>
                                             </div>
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="" placeholder="Confirm Password" >
+                                                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="" placeholder="Confirm Password" >
                                                 <label for="password" class="form-label">Confirm Password</label>
                                             </div>
+                                            @error('password_confirmation')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <div class="d-grid">
@@ -51,7 +70,7 @@
                                     <div class="col-12">
                                         <hr class="mt-5 mb-4 border-secondary-subtle">
                                         <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-center">
-                                            <a href="#!" class="link-secondary text-decoration-none">Click here to login</a>
+                                            <a href="{{ route('login') }}" class="link-secondary text-decoration-none">Click here to login</a>
                                         </div>
                                     </div>
                                 </div>
