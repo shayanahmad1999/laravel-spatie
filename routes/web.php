@@ -16,7 +16,10 @@ Route::group(['middleware' => 'guest'], function(){
 
 });
 
-Route::group(['middleware' => 'auth'], function(){
+    //we define role here as well and in controller as well and in blade as well define it where you want
+
+// Route::group(['middleware' => ['role:Super Admin']], function(){
+Route::group(['middleware' => ['auth']], function(){
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 
@@ -28,5 +31,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('role/{role?}', [RoleController::class, 'index'])->name('role.index');
     Route::post('role/store', [RoleController::class, 'store'])->name('role.store');
     Route::post('role/update/{role}', [RoleController::class, 'update'])->name('role.update');
-    Route::delete('role/delete/{role}', [RoleController::class, 'destroy'])->name('role.destroy');
+    Route::delete('role/delete/{role}', [RoleController::class, 'destroy'])
+    // ->middleware('permission:delete role')
+    ->name('role.destroy');
+
+
+    Route::post('role/assign/permission/{role}', [RoleController::class, 'assignPermissionToRole'])->name('role.assign.permission');
+    Route::post('user/assign/role/{user}', [RoleController::class, 'assignRoleToUser'])->name('user.assign.role');
 });
