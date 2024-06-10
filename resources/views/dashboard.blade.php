@@ -39,6 +39,12 @@
                                             data-bs-target="#assignRole{{ $user->id }}">Assign Role</a>
                                     </td>
                                 </tr>
+                                @php
+                                    $userRoles = DB::table('model_has_roles')
+                                        ->where('model_has_roles.model_id', $user->id)
+                                        ->pluck('model_has_roles.role_id')
+                                        ->toArray();
+                                @endphp
                                 <div class="modal fade" id="assignRole{{ $user->id }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -54,7 +60,9 @@
                                                     @csrf
                                                     @foreach ($roles as $role)
                                                         <input type="checkbox" name="roles[]" value="{{ $role->name }}"
-                                                            class="mb-3" />
+                                                            class="mb-3"
+                                                            {{ in_array($role->id, $userRoles) ? 'checked' : '' }}
+                                                            />
                                                         {{ $role->name }}
                                                     @endforeach
                                                     @error('roles')
