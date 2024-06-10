@@ -47,21 +47,27 @@
                                     <td>
                                         {{-- we define role here as well and in web as well and in controller as well define it where you want --}}
                                         @role('delete role')
-                                        <a href="{{ route('role.index', $role->id) }}">Edit</a> |
+                                            <a href="{{ route('role.index', $role->id) }}">Edit</a> |
                                         @endrole
                                         @can('delete role')
-                                        <form action="{{ route('role.destroy', $role->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="btn btn-link p-0 m-0 align-baseline">Delete</button>
-                                        </form>
+                                            <form action="{{ route('role.destroy', $role->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-link p-0 m-0 align-baseline">Delete</button>
+                                            </form>
                                         @endcan |
                                         <a href="javascript:;" data-bs-toggle="modal"
                                             data-bs-target="#assignPermission{{ $role->id }}">Assign Permission</a>
                                     </td>
                                 </tr>
+                                @php
+                                    $rolePermissions = DB::table('role_has_permissions')
+                                        ->where('role_has_permissions.role_id', $role->id)
+                                        ->pluck('role_has_permissions.permission_id')
+                                        ->toArray();
+                                @endphp
                                 <div class="modal fade" id="assignPermission{{ $role->id }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -79,8 +85,7 @@
                                                     @foreach ($permissions as $permission)
                                                         <input type="checkbox" name="permissions[]"
                                                             value="{{ $permission->name }}" class="mb-3"
-                                                            {{-- {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}  --}}
-                                                            />
+                                                            {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }} />
                                                         {{ $permission->name }}
                                                     @endforeach
                                                     @error('permissions')
